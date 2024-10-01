@@ -13,7 +13,7 @@ builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(x => x.UseInlineDefinitionsForEnums());
+builder.Services.AddSwaggerGen();
 
 WebApplication app = builder.Build();
 
