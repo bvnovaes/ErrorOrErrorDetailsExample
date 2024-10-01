@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ErrorDetailsExample.Api;
 using ErrorDetailsExample.Application;
 using ErrorDetailsExample.Infrastructure;
@@ -8,10 +9,11 @@ builder.Services.AddPresentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x => x.UseInlineDefinitionsForEnums());
 
 WebApplication app = builder.Build();
 
