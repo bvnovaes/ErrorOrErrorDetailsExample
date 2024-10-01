@@ -18,7 +18,8 @@ public class UsersController(
     IUpdateUserService updateUserService,
     IDeleteUserService deleteUserService,
     IMapper mapper,
-    IValidator<CreateUserRequest> validator) : ApiController
+    IValidator<CreateUserRequest> createUserRequestValidator,
+    IValidator<UpdateUserRequest> updateUserRequestValidator) : ApiController
 {
     [HttpGet]
     public IActionResult GetAllUsers()
@@ -26,37 +27,38 @@ public class UsersController(
         ErrorOr<List<User>> result = getAllUsersService.GetAllUsers();
 
         return result.Match(
-            success => Ok(success),
-            error => Problem(error));
+            success => Ok(mapper.Map<List<UserResponse>>(success)),
+            Problem);
 
-        // return result.IsError 
-        //     ? Problem(result.Errors) 
-        //     : Ok(result);
+        //return result.IsError
+        //    ? Problem(result.Errors)
+        //    : Ok(result.Value);
     }
 
     [HttpPost]
     public IActionResult CreateUser(CreateUserRequest request)
     {
-        ValidationResult? validationResult = validator.Validate(request);
+        ValidationResult? validationResult = createUserRequestValidator.Validate(request);
 
         if (!validationResult.IsValid)
         {
             List<Error> errors = validationResult.Errors
                 .Select(e => Error.Validation(e.PropertyName, e.ErrorMessage))
                 .ToList();
+
             return Problem(errors);
         }
-        
+
         var user = mapper.Map<User>(request);
         ErrorOr<User> result = createUserService.CreateUser(user);
 
         return result.Match(
             success => CreatedAtAction(nameof(CreateUser), new { id = success.Id }, mapper.Map<UserResponse>(success)),
-            error => Problem(error));
+            Problem);
 
-        // return result.IsError
-        //     ? Problem(result.Errors)
-        //     : CreatedAtAction(nameof(CreateUser), new { id = result.Value.Id }, mapper.Map<UserResponse>(result));
+        //return result.IsError
+        //    ? Problem(result.Errors)
+        //    : CreatedAtAction(nameof(CreateUser), new { id = result.Value.Id }, mapper.Map<UserResponse>(result.Value));
     }
 
     [HttpGet("{id:long}")]
@@ -66,27 +68,37 @@ public class UsersController(
 
         return result.Match(
             success => Ok(mapper.Map<UserResponse>(success)),
-            error => Problem(error));
+            Problem);
 
-        // return result.IsError
-        //     ? Problem(result.Errors)
-        //     : Ok(mapper.Map<UserResponse>(result));
+        //return result.IsError
+        //    ? Problem(result.Errors)
+        //    : Ok(mapper.Map<UserResponse>(result.Value));
     }
 
     [HttpPut("{id:long}")]
     public ActionResult<UserResponse> UpdateUser(long id, UpdateUserRequest request)
     {
+        ValidationResult? validationResult = updateUserRequestValidator.Validate(request);
+
+        if (!validationResult.IsValid)
+        {
+            List<Error> errors = validationResult.Errors
+                .Select(e => Error.Validation(e.PropertyName, e.ErrorMessage))
+                .ToList();
+
+            return Problem(errors);
+        }
+
         User user = mapper.Map<User>(request) with { Id = id };
         ErrorOr<User> result = updateUserService.UpdateUser(user);
 
         return result.Match(
             success => Ok(mapper.Map<UserResponse>(success)),
-            error => Problem(error)
-        );
+            Problem);
 
-        // return result.IsError
-        //     ? Problem(result.Errors)
-        //     : Ok(result);
+        //return result.IsError
+        //    ? Problem(result.Errors)
+        //    : Ok(result.Value);
     }
 
     [HttpDelete("{id:long}")]
@@ -96,10 +108,10 @@ public class UsersController(
 
         return result.Match(
             _ => NoContent(),
-            error => Problem(error));
+            Problem);
 
-        // return result.IsError
-        //     ? Problem(result.Errors)
-        //     : NoContent();
+        //return result.IsError
+        //    ? Problem(result.Errors)
+        //    : NoContent();
     }
 }

@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IDeleteUserService, DeleteUserService>();
 
         services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
+        services.AddScoped<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
         
         return services;
     }

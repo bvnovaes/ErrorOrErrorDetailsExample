@@ -3,14 +3,10 @@ using FluentValidation;
 
 namespace ErrorDetailsExample.Application.Users.Validators;
 
-public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
+public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
 {
-    public CreateUserRequestValidator()
+    public UpdateUserRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Id não pode ser vazio.")
-            .GreaterThan(0).WithMessage("Id precisa ser maior que 0.");
-
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First name não pode ser vazio.");
 
