@@ -9,7 +9,7 @@ public class UserRepository : IUserRepository
 
     public ErrorOr<User> GetUserById(long id)
     {
-        var user = _users.FirstOrDefault(x => x.Id == id);
+        User? user = _users.FirstOrDefault(x => x.Id == id);
 
         return user is not null
             ? user
