@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="ErrorOr" Version="2.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ErrorDetailsExample.Application\ErrorDetailsExample.Application.csproj" />
+      <ProjectReference Include="..\ErrorDetailsExample.Contracts\ErrorDetailsExample.Contracts.csproj" />
+      <ProjectReference Include="..\ErrorDetailsExample.Infrastructure\ErrorDetailsExample.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
