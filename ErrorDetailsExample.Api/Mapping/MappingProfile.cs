@@ -3,7 +3,7 @@ using ErrorDetailsExample.Contracts.Requests;
 using ErrorDetailsExample.Contracts.Responses;
 using ErrorDetailsExample.Domain.Users;
 
-namespace ErrorDetailsExample.Api.Controllers.Mapping;
+namespace ErrorDetailsExample.Api.Mapping;
 
 public class MappingProfile : Profile
 {

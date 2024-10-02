@@ -1,4 +1,4 @@
-﻿using ErrorDetailsExample.Api.Controllers.Mapping;
+﻿using ErrorDetailsExample.Api.Mapping;
 
 namespace ErrorDetailsExample.Api;
 
